@@ -13,3 +13,9 @@ Issues 存放在本仓库的 GitHub Issues（`meisijiya/full-stack-skill`），�
 ### Domain docs
 
 单上下文布局：根目录 `GLOSSARY.md` + `docs/adr/`。See `docs/agents/domain.md`.
+
+## 本仓库提供的 skill
+
+`fullstack-stack-guide` —— 全栈技术栈选型指导（TypeScript 轨 / Python 轨）。见 `skills/fullstack-stack-guide/SKILL.md`。
+
+选型与术语解释由它承担；需求对齐、架构设计、代码审查不归它管。
