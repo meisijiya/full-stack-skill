@@ -129,6 +129,27 @@ curl -s https://pypi.org/pypi/<pkg>/json | jq '.info.version'
 - 结论：<版本号> / 冲突与消解 / 未查得官方声明
 ```
 
+## 选型落地后的最小验证顺序
+
+版本查证只能证明「声明上兼容」。**证明组合真能跑**要靠最小切片验证：选型定下、动手写业务前，按这个顺序走一遍，每步都是下一步的前置。
+
+1. **装依赖** —— 锁死决策表里的确切版本（不用范围）
+2. **构建** —— 证明路由代码生成与打包链路通。TS 轨注意 TanStack Router 的路由树由构建生成，**必须先构建再类型检查**
+3. **类型检查与 lint** —— 证明静态检查链路通
+4. **迁移生成与执行** —— 证明数据层链路通。TS 轨 Drizzle 先 `generate` 再 `migrate`；Python 轨先 `alembic revision --autogenerate` 再 `upgrade`。注意 Prisma v7 起 `migrate dev` 不再自动触发 `generate`
+5. **测试** —— 证明测试链路通
+6. **浏览器/接口手动过一条主流程** —— 证明应用真能起
+
+任一步失败，**先怀疑组合本身**（回看硬约束与 peer 范围），不要改业务代码。
+
+验证结果追加到 `docs/stack/version-evidence.md` 末尾，作为组合可行性的证据。
+
+### Vite+ 工具链的具体纪律
+
+若选了 Vite+（`vp` 统一 CLI），vite 是通过**别名**指向 vite-plus 的核心包，且别名版本与 vite-plus 版本必须一致——不同步会报版本解析失败（如 `Failed to resolve vite command: Expected @voidzero-dev/vite-plus-core@X, but found ...@Y`）。项目里通常是 `pnpm-workspace.yaml` 的 catalog 里两处同改，或跑 `vp migrate` 对齐。
+
+vite-plus 精确锁定 oxlint / oxfmt / vitest 版本，**升这些只能升 vite-plus 本身**。lint 规则报错 "Rule '...' not found in plugin" 通常是 oxlint 版本与规则集不匹配，升 vite-plus 即可（具体形态会漂移，查 `viteplus.dev/guide`）。
+
 ## 已知坑（实测于 2026-11-04，形态会漂移，用前复核）
 
 - **预发布版占 latest**：`prisma` latest 指向 RC；`drizzle-orm` latest 停在 0.x 而 1.0 RC 已发布。查 dist-tags 才能看出。
