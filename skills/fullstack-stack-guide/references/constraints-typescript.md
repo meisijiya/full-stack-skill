@@ -52,29 +52,37 @@
 
 ### 运行时版本下限
 
-包清单里的 `engines` 与 `peerDependencies` 是硬约束。**具体数值会漂移，用前现查**（见 `version-verification.md`）。以下是 2026-11-04 实测的形态示例，用于说明查哪些字段：
+包清单里的 `engines` 与 `peerDependencies` 是硬约束。**本文件不记任何具体版本号**——数值会漂移，用前现查（命令见 `version-verification.md`）。
 
-| 包 | 字段与实测值 |
+每个包都要查这两个字段，且**所有包的 Node 范围取交集**：
+
+| 查什么 | 命令 | 用来判断 |
+|---|---|---|
+| `engines.node` | `npm view <pkg> engines --json` | 该包要求的 Node 下限 |
+| `peerDependencies` | `npm view <pkg> peerDependencies --json` | 与已选其它包能否共存 |
+| `peerDependenciesMeta` | `npm view <pkg> peerDependenciesMeta --json` | 哪些 peer 是可选的（缺失不算冲突） |
+
+**哪些包必须一起查**（一个都不能漏）：
+
+| 组合 | 要一起查的字段 |
 |---|---|
-| vite | `engines.node: "^20.19.0 || >=22.12.0"` |
-| next | `engines.node: ">=20.9.0"` |
-| vitest | `engines.node: "^22.12.0 || ^24.0.0 || >=26.0.0"`，`peerDependencies.vite: "^6.4.0 || ^7.0.0 || ^8.0.0"` |
-| @tanstack/react-router | `engines.node: ">=20.19"` |
-| @tanstack/react-start | `engines.node: ">=22.12.0"`，`peerDependencies.vite: ">=8.0.0"` |
-| @orpc/server | 官方 Runtime Requirements：Node.js 最低 18、推荐 22+（https://orpc.dev/docs/requirements） |
+| 构建工具 + 测试运行器 | 两者的 `engines.node` 与测试运行器对构建工具的 `peerDependencies`（测试运行器常要求特定的构建工具版本范围） |
+| 前端框架 + 路由 | 路由对 `react` / `react-dom` 的 `peerDependencies` |
+| ORM + 认证 | 认证对 ORM / 数据库驱动的 `peerDependencies` 与 `peerDependenciesMeta` |
+| 全栈框架 + 工具链 | 框架对 `vite` 的 `peerDependencies`（决定能否用该框架自带的构建工具） |
+
+`@orpc/server` 这类包的 `engines` 可能缺失，改查它的官方 Runtime Requirements 页（https://orpc.dev/docs/requirements）——**官方文档里的运行时要求与 npm 清单同样算硬约束**，两者不一致时以官方文档为准并记录下来。
 
 ### TypeScript 版本
 
 - npm 上 `typescript` 的 `latest` 已是 **TS 7**（Go 原生移植），官方说明："TypeScript 7.0 is made to be compatible with TypeScript 6.0's type-checking and command-line behavior."（https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/）
 - **TS 7 不带 API**："it does not ship with an API. We expect TypeScript 7.1 to ship with a new (and different) API"。依赖 TS compiler API 的工具（如 typescript-eslint）需并排使用 `@typescript/typescript6`。
-- **Zod 的 TS 下限**："Zod is tested against *TypeScript v5.5* and later. Older versions may work but are not officially supported."（https://zod.dev/）
+- **Zod 的 TS 下限**："Zod is tested against *TypeScript v5.5* and later. Older versions may work but are not officially supported."（https://zod.dev/）——**这是 Zod 官方声明的测试下限，不是 TS 的下限**；别的库各自声明，逐一查。
 
 ### React 版本
 
-- React 官方当前版本线为 19.x，18.x 归档在 18.react.dev（https://react.dev/versions）
-- Next.js `peerDependencies.react`: `^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0`
-- TanStack react-router / react-start `peerDependencies.react`: `>=18.0.0 || >=19.0.0`
-- React Router (Remix) v8 `peerDependencies.react`: `>=19.2.7`
+- React 官方版本线在 react.dev/versions，上一版归档在 18.react.dev（https://react.dev/versions）
+- 各框架对 React 的 `peerDependencies` 范围各不相同，查 `npm view next peerDependencies`、`npm view @tanstack/react-router peerDependencies`、`npm view react-router peerDependencies`。
 - Next.js App Router 使用内置 React canary："App Router: Uses React canary releases built-in… Pages Router: Uses the React version installed in your project's package.json."（https://nextjs.org/docs）
 
 ### Node 版本与 LTS
@@ -124,6 +132,14 @@ Playwright 官方："Each version of Playwright needs specific versions of brows
 前端框架 → 路由 → 后端 → API 风格 → 校验 → 数据库引擎 → ORM → 认证 → UI → 构建与工具链 → 测试 → 运行时 → 部署(打包 / 进程与反向代理)
 ```
 
+骨架里**没有单列**的两层，各归属如下（决策表里照此填写，不要留空也不要另起一层）：
+
+| 归属层 | 包含 | 说明 |
+|---|---|---|
+| 数据层（ORM） | 迁移工具 | TS 轨迁移工具绑定 ORM：Drizzle 配 drizzle-kit，Prisma 配 `prisma migrate` |
+| 构建与工具链 | 依赖管理 | 包管理器与锁文件（pnpm / npm / yarn）属于工具链层 |
+| 部署（打包） | 部署目标 | Docker / PaaS / 静态托管等属于部署层 |
+
 两种常见形状：
 
 **形状 A · SPA + 独立后端**
@@ -138,8 +154,10 @@ Next.js 或 TanStack Start 内部就有服务端，不单选后端层，API 风�
 
 选了 Next.js，构建层就不是 Vite 而是内置的 Turbopack（官方：`--turbopack` 为默认，`--webpack` 可回退，https://nextjs.org/docs/app/api-reference/cli/next）。连带影响：
 
-- **单元测试运行器**：Vitest 的 `peerDependencies.vite` 覆盖 `^6.4.0 || ^7.0.0 || ^8.0.0`，不与 Next.js 共存。Next.js 官方测试指南给出 Jest 与 Vitest 两套设置方式（https://nextjs.org/docs/app/guides/testing），E2E 推荐 Playwright。选 Next.js 时单测运行器要单独定。
+- **单元测试运行器**：Vitest 的 `peerDependencies.vite` 不覆盖 Next.js 用的构建工具，因此两者不共存。Next.js 官方测试指南给出 Jest 与 Vitest 两套设置方式（https://nextjs.org/docs/app/guides/testing），E2E 推荐 Playwright。选 Next.js 时单测运行器要单独定，并且要查它对 Node 的 `engines`。
 - **类型检查**：Next.js 有独立的 `next typegen` 生成路由类型，官方说明可在构建前独立生成路由类型做类型检查（https://nextjs.org/docs/app/api-reference/cli/next）。
+- **React 版本与 canary**：Next.js App Router 使用内置 React canary，Pages Router 使用项目 `package.json` 里安装的 React 版本（https://nextjs.org/docs）。这意味着 `package.json` 里写的 `react` 版本与 App Router 实际运行的版本可能不同。查证时两个都要记：`npm view next peerDependencies` 看声明范围，`npm view react dist-tags` 看当前稳定与 canary 线，并在决策表注明 App Router 会用内置 canary。
+- **Node 版本交集**：各工具的 `engines.node` 范围要取**交集**，不能只看主框架。测试运行器与构建工具的门槛常比主框架更高。选 Node 版本时以交集为准。
 - **部署形态**：Next.js 官方列出 Vercel（推荐）、Node.js Server、Docker、Static Export 与适配器等形态，各自限制不同（https://nextjs.org/docs/app/getting-started/deploying）。
 
 选 Vite 系（TanStack Router SPA / TanStack Start）时工具链统一，代价是没有 Next.js 的生态与内建约定。

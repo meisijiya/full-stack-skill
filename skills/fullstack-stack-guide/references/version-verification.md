@@ -4,8 +4,8 @@
 
 ## 为什么要查
 
-- npm 上 `latest` 标签**不等于稳定版**。实测 2026-11-04：`prisma` 的 latest 指向 `8.0.0-rc.30`（RC），`drizzle-orm` 的 latest 停在 `0.45.4` 而 `1.0.0-rc.5` 已发布。照抄 `npm i pkg@latest` 会拿到预发布版。
-- 文档推荐版本 ≠ 实际安装版本。实测：`@orpc/server` 的 npm latest 是 1.16.1（v1 稳定），但 oRPC 官网文档明确 "These docs cover oRPC v2, currently in beta"，安装命令是 `npm install @orpc/server@beta`。
+- npm 上 `latest` 标签**不等于稳定版**。实测：`prisma` 的 latest 曾指向 RC，`drizzle-orm` 的 latest 停在 0.x 而 1.0 RC 已发布（这类形态会变，用前现查）。照抄 `npm i pkg@latest` 会拿到预发布版。
+- 文档推荐版本 ≠ 实际安装版本。实测：`@orpc/server` 的 npm latest 是 v1 稳定，但 oRPC 官网文档明确 "These docs cover oRPC v2, currently in beta"，安装命令是 `npm install @orpc/server@beta`。
 - 版本下限藏在 `engines` 和 `peerDependencies` 里，不看清单就会撞上。
 
 ## npm 查证
@@ -51,9 +51,10 @@ curl -s https://registry.npmjs.org/<pkg>/latest | jq '{version, engines, peerDep
 
 1. `dist-tags.latest` 含预发布标识 → **不能用 latest**，改用具体稳定版本号并说明理由。
 2. 目标包的 `engines.node` 范围 → 决定 Node 版本下限。Node 版本还要对照官方 LTS 表（https://nodejs.org/en/about/previous-releases）。
-3. 目标包的 `peerDependencies` 与已选其它包的**实际版本**逐一比对：对方版本不在你的 peer 范围内 → 硬冲突，必须换版本或换包。
-4. `peerDependenciesMeta` 里标 `optional: true` 的 peer 缺失不算冲突。
-5. 框架与工具链的耦合要看官方 changelog，不能只看 peer 范围——例如工具链精确锁定 linter / formatter / test runner 版本时，升 linter 只能升工具链本身。
+3. **多个包的 Node 范围取交集。** 整个项目能跑的 Node 版本，是所有依赖的 `engines.node` 范围的交集，不是主框架一个包的。测试运行器、构建工具的门槛常比主框架高。
+4. 目标包的 `peerDependencies` 与已选其它包的**实际版本**逐一比对：对方版本不在你的 peer 范围内 → 硬冲突，必须换版本或换包。
+5. `peerDependenciesMeta` 里标 `optional: true` 的 peer 缺失不算冲突。
+6. 框架与工具链的耦合要看官方 changelog，不能只看 peer 范围——例如工具链精确锁定 linter / formatter / test runner 版本时，升 linter 只能升工具链本身。
 
 ### 包没有声明 `engines` 时的判定
 

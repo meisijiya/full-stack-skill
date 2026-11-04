@@ -31,18 +31,18 @@ docs/stack/
 按层分节，每节记：命令原文、输出原文、日期、结论。
 
 ```markdown
-### 数据层 · drizzle-orm
+### 数据层 · <包名>
 
-- 日期：2026-11-04
+- 日期：YYYY-MM-DD
 - 命令：
   ```
-  npm view drizzle-orm dist-tags --json
+  npm view <pkg> dist-tags --json
   ```
 - 输出：
   ```json
-  { "latest": "0.45.4", "next": "1.0.0-rc.5" }
+  { "latest": "<版本号>", "next": "<预发布版本号>" }
   ```
-- 结论：latest 停在 0.x，1.0 仍是 RC。选用 0.45.4（稳定线），不追 1.0 RC。
+- 结论：<版本号> / <为什么不追预发布> / 未查得官方声明
 ```
 
 模板见 `templates/version-evidence.md`。
