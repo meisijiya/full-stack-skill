@@ -7,14 +7,17 @@
 | 层 | 候选与官方定位 |
 |---|---|
 | Web 框架 | **FastAPI** — "a modern, fast (high-performance), web framework for building APIs with Python based on standard Python type hints."（https://fastapi.tiangolo.com/）<br>**Django** — "a high-level Python web framework that encourages rapid development and clean, pragmatic design."（https://www.djangoproject.com/）<br>**Flask** — "a lightweight WSGI web application framework."（https://flask.palletsprojects.com/en/stable/）<br>**Litestar** — "The Modern Python ASGI Framework Built to scale"；"Fast APIs with automatic OpenAPI documentation, dependency injection, type safety"（https://litestar.dev/）<br>**Sanic** — "a Python 3.10+ web server and web framework that's written to go fast."（https://sanic.dev/en/） |
-| 数据层 | **SQLAlchemy 2.x** — 官方提供 async 支持（`sqlalchemy.ext.asyncio`，https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html）<br>**Django ORM** — Django 内置<br>**Tortoise ORM** — "an easy-to-use asyncio ORM inspired by Django"；"a lightweight, async-native Object-Relational Mapper"；"supports CPython 3.10 and later"（https://tortoise.github.io/）<br>**SQLModel** — "based on Python type annotations, and powered by Pydantic and SQLAlchemy"（https://sqlmodel.tiangolo.com/）<br>**peewee** — "a simple and small ORM"；"asyncio support built on the standard async drivers (aiosqlite, asyncpg, aiomysql)"（http://docs.peewee-orm.com/en/latest/） |
+| 数据层 · ORM | **SQLAlchemy 2.x** — 官方提供 async 支持（`sqlalchemy.ext.asyncio`，https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html）<br>**Django ORM** — Django 内置<br>**Tortoise ORM** — "an easy-to-use asyncio ORM inspired by Django"；"a lightweight, async-native Object-Relational Mapper"；"supports CPython 3.10 and later"（https://tortoise.github.io/）<br>**SQLModel** — "based on Python type annotations, and powered by Pydantic and SQLAlchemy"（https://sqlmodel.tiangolo.com/）<br>**peewee** — "a simple and small ORM"；"asyncio support built on the standard async drivers (aiosqlite, asyncpg, aiomysql)"（http://docs.peewee-orm.com/en/latest/） |
+| 数据层 · 数据库引擎 | 见 `database-engines.md`（TS 轨与 Python 轨共用） |
 | 迁移 | **Alembic** — "a lightweight database migration tool for usage with the SQLAlchemy Database Toolkit for Python."（https://alembic.sqlalchemy.org/）<br>**Django makemigrations / migrate** — Django 内置 |
-| 校验 | **Pydantic v2** — "Pydantic V2 is now the current production release of Pydantic"（https://docs.pydantic.dev/latest/migration） |
+| 校验 | **Pydantic v2** — "Pydantic V2 is now the current production release of Pydantic"；"Data validation using Python type hints"（https://docs.pydantic.dev/latest/migration）<br>**attrs** — "the Python package that will bring back the joy of writing classes by relieving you from the drudgery of implementing object protocols"（https://www.attrs.org/）<br>**cattrs** — "an open source Python library for structuring and unstructuring data"（https://cattrs.readthedocs.io/）<br>**msgspec** — "A fast serialization and validation library, with builtin support for JSON, MessagePack, YAML, and TOML."（https://jcristharif.com/msgspec/） |
+| 认证 | **Django 内置认证** — "Django comes with a user authentication system. It handles user accounts, groups, permissions and cookie-based user sessions."（https://docs.djangoproject.com/en/stable/topics/auth/）<br>**Authlib** — "a library that builds OAuth and OpenID Connect servers and clients"（https://docs.authlib.org/）<br>**fastapi-users** — "Add quickly a registration and authentication system to your FastAPI project."（https://fastapi-users.github.io/fastapi-users/） |
 | 依赖管理 | **uv** — "An extremely fast Python package and project manager, written in Rust."；"A single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more."（https://docs.astral.sh/uv/）<br>**Poetry** — "Python packaging and dependency management made easy"（https://python-poetry.org/） |
 | 测试 | **pytest** — "The pytest framework makes it easy to write small tests, yet scales to support complex functional testing"（https://pypi.org/project/pytest/）<br>**pytest-asyncio** — "a pytest plugin… facilitates testing of code that uses the asyncio library"（https://pypi.org/project/pytest-asyncio/）<br>**httpx** — "a fully featured HTTP client library for Python 3… provides both sync and async APIs"（https://pypi.org/project/httpx/） |
-| 运行时与服务器 | **ASGI**（uvicorn / granian）、**WSGI**（gunicorn）—— 见硬约束节 |
+| 运行时与服务器 | **ASGI**（uvicorn / granian）、**WSGI**（gunicorn）—— 见硬约束节<br>**Uvicorn** — "an ASGI web server implementation for Python."（https://www.uvicorn.org/）<br>**Gunicorn** — "a Python WSGI HTTP Server for UNIX. It's a pre-fork worker model."，官方部署文档说明应置于反向代理之后用于生产（https://docs.gunicorn.org/en/stable/） |
 | 后台任务 | **Celery** — "Distributed Task Queue."（https://pypi.org/project/celery/）<br>**Dramatiq** — "A fast and reliable distributed task processing library for Python 3."（https://pypi.org/project/dramatiq/）<br>**Taskiq** — "Distributed task queue with full async support"；分类器标注 `Development Status :: 3 - Alpha`（https://pypi.org/project/taskiq/）<br>**arq** — "Job queues in python with asyncio and redis"；官方标注 **"arq is in maintenance only mode"**（https://pypi.org/project/arq/） |
-| 部署 | **Docker** — 官方 Python 镜像："The python images come in many flavors, each designed for a specific use case."；`python:<version>` 是默认镜像，另有 `-slim` / `-alpine`（https://github.com/docker-library/docs/blob/master/python/README.md） |
+| 部署 · 打包 | **Docker** — 官方 Python 镜像："The python images come in many flavors, each designed for a specific use case."；`python:<version>` 是默认镜像，另有 `-slim` / `-alpine`（https://github.com/docker-library/docs/blob/master/python/README.md） |
+| 部署 · 进程与反向代理 | **Nginx** — "a free, open-source, high-performance HTTP server and reverse proxy"（https://nginx.org/en/）<br>**Caddy** — "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"（https://caddyserver.com/） |
 
 ## 技术硬约束
 
@@ -60,17 +63,11 @@
 
 ### SQLite 的并发写入
 
-官方 WAL 文档（https://www.sqlite.org/wal.html）：自 3.7.0 起支持 WAL，"Writers merely append new content to the end of the WAL file."；默认 rollback journal 模式下同一时刻通常只允许一个写入者。BEGIN CONCURRENT 等多写入者能力是扩展特性（https://sqlite.org/hctree/doc/begin-concurrent/doc/begin_concurrent.md）。
-
-**后果**：SQLite 适合单机与开发，不适合多进程并发写入的生产场景。这是数据库选型的硬事实。
+见 `database-engines.md`。
 
 ### MongoDB 的 Python 驱动与 ODM
 
-官方建议直接用驱动："we recommend that new PyMongo users begin by working directly with the driver. PyMongo alone will meet most people's needs"（https://www.mongodb.com/docs/languages/python/pymongo-driver/current/integrations）。ODM 列表（MincePy、Ming、MongoEngine、MotorEngine、uMongo）标注为第三方、官方不维护。
-
-**Motor 弃用原文**："As of May 14, 2025, Motor is deprecated in favor of the GA release of the PyMongo Async API in the PyMongo library… We strongly recommend migrating to the PyMongo Async API while Motor is still supported."（https://www.mongodb.com/docs/drivers/motor）
-
-**后果**：新项目不要选 Motor。
+见 `database-engines.md`。
 
 ### ASGI 与 WSGI 的分野
 
@@ -99,7 +96,7 @@ Flask 官方自述是 WSGI 框架；Litestar 与 Sanic 官方自述为 ASGI 框�
 ## 层之间怎么搭
 
 ```
-Python 版本 → Web 框架 → 数据层(ORM) → 迁移工具 → 校验 → 依赖管理 → 测试 → 服务器模型(ASGI/WSGI) → 部署 → 后台任务(可选)
+Python 版本 → Web 框架 → 校验 → 数据库引擎 → ORM → 迁移工具 → 认证 → 依赖管理 → 测试 → 服务器模型(ASGI/WSGI) → 部署(打包 / 进程与反向代理) → 后台任务(可选)
 ```
 
 两条主干路线：
@@ -111,3 +108,26 @@ ORM、迁移、认证、admin 全部内置。一个进程一个项目，约定�
 每个层各选一个，组装自由，依赖显式。适合 API 优先、要精确控制异步模型或依赖组合的项目。
 
 关键差异不在性能，而在**默认约定密度**：Django 给你一整套决定，FastAPI 给你一套选择。这条要写进决策表。
+
+### 选框架会连带锁住的东西
+
+- **Django 路线不需要单选 ORM、迁移、认证、依赖管理** —— 这四层由 Django 给出（内置 `makemigrations` / `migrate` 与认证系统）。决策表里这几层填「Django 内置」，不填具体库。
+- **FastAPI 路线必须自己选 ORM 与迁移**，且两者强绑定：Alembic 官方定位就是 "for usage with the SQLAlchemy Database Toolkit"（https://alembic.sqlalchemy.org/）。选别的 ORM 就没有对应的迁移工具，需要另找或手写。
+- **服务器模型由框架决定**：Flask 官方自述是 WSGI 框架，Litestar 与 Sanic 自述是 ASGI。FastAPI 是 ASGI（基于 Starlette）。选 WSGI 框架就用不了 async 依赖注入与 async ORM。
+- **异步模型会传染到 ORM 层**：需要 async 的项目，Tortoise 与 SQLAlchemy 2.x 的 async API 可用；SQLModel 官方文档未宣传 async API（见硬约束节），选它前需自行确认。
+
+### 数据库引擎的选法
+
+见 `database-engines.md`（TS 轨与 Python 轨共用）：候选与官方定位、SQLite 并发写入限制、MongoDB 驱动选择（含 Motor 已弃用）、引擎与 ORM/认证/部署的耦合。
+
+要点：**引擎选择与 ORM 选择是两个决定** —— SQLAlchemy 官方支持多种方言（https://docs.sqlalchemy.org/en/20/dialects/），Tortoise 与 peewee 各有支持范围。引擎对部署复杂度的影响最大：PostgreSQL / MySQL / MongoDB 是独立服务，部署层要包含它们；SQLite 是进程内文件，只需备份文件。
+
+### 认证层的选择差异
+
+| 候选 | 定位 | 适合 |
+|---|---|---|
+| Django 内置认证 | 用户账号、用户组、权限、cookie 会话一体 | 走 Django 路线时直接用，不需另选 |
+| Authlib | 构建 OAuth 与 OpenID Connect 的服务端与客户端 | 需要接第三方身份提供方（Google、GitHub、企业 SSO） |
+| fastapi-users | 给 FastAPI 项目加注册与认证，可高度定制 | 走 FastAPI 路线且要自建用户体系 |
+
+Django 官方对认证的完整表述："It handles user accounts, groups, permissions and cookie-based user sessions."（https://docs.djangoproject.com/en/stable/topics/auth/）——**权限与用户组是内置的**，这是 Django 路线的实质优势。

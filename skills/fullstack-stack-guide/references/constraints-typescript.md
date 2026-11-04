@@ -37,14 +37,16 @@
 | 路由 | **TanStack Router** — "The route tree is the application contract. Define routes once, then let TypeScript carry paths, params, search state, loaders, links, and boundaries through every navigation."（https://tanstack.com/router/latest） |
 | 后端 | **Hono** — "a small, simple, and ultrafast web framework built on Web Standards. It works on any JavaScript runtime: Cloudflare Workers, Fastly Compute, Deno, Bun, Vercel, Netlify, AWS Lambda, Lambda@Edge, and Node.js."（https://hono.dev/）<br>**框架自带 server** — Next.js / TanStack Start 自带，此时不再单选后端层 |
 | API 风格 | **oRPC** — "Build end-to-end typesafe APIs and serve them over RPC, OpenAPI, and MCP"（https://orpc.dev/） |
-| 数据层 | **Drizzle ORM** — "a lightweight and performant TypeScript ORM with developer experience in mind."（https://orm.drizzle.team/）<br>**Prisma ORM** — "Type-safe data layer — A declarative, type-safe schema rebuilt in native TypeScript"（https://www.prisma.io/） |
-| 认证 | **Better Auth** — "The most comprehensive authentication framework for TypeScript"（https://www.better-auth.com/） |
+| 数据层 · ORM | **Drizzle ORM** — "a lightweight and performant TypeScript ORM with developer experience in mind."（https://orm.drizzle.team/）<br>**Prisma ORM** — "Type-safe data layer — A declarative, type-safe schema rebuilt in native TypeScript"（https://www.prisma.io/） |
+| 数据层 · 数据库引擎 | 见 `database-engines.md`（TS 轨与 Python 轨共用） |
+| 认证 | **Better Auth** — "a framework-agnostic authentication and authorization framework for TypeScript"（https://www.better-auth.com/）<br>**Auth.js** — "a complete open source authentication solution for web applications"（https://authjs.dev/）<br>**Supabase Auth** — "makes it easy for end users to sign in to your application"（https://supabase.com/docs/guides/auth） |
 | UI | **Tailwind CSS v4** — "A utility-first CSS framework packed with classes like flex, pt-4, text-center"（https://tailwindcss.com/）<br>**shadcn/ui** — "The Foundation for your Design System. Composable, accessible components with thoughtful defaults."（https://ui.shadcn.com/） |
-| 构建与工具链 | **Vite** — "The Build Tool for the Web."（https://vite.dev/）<br>**Vite+** — "the unified toolchain and entry point for web development."；"neither a framework, nor a package manager and *definitely not a replacement for Vite*"（https://viteplus.dev/guide/） |
+| 构建与工具链 | **Vite** — "The Build Tool for the Web."（https://vite.dev/）<br>**Vite+** — "the unified toolchain and entry point for web development."；"neither a framework, nor a package manager and *definitely not a replacement for Vite*"（https://viteplus.dev/guide/）<br>**Turbopack**（Next.js 内置）— "an incremental bundler optimized for JavaScript and TypeScript, written in Rust, and built into Next.js"（https://nextjs.org/docs/app/api-reference/turbopack） |
 | 测试 | **Vitest** — "A Vite-native testing framework."（https://vitest.dev/）<br>**Playwright** — "Fast and reliable end-to-end testing for modern web apps"（https://playwright.dev/） |
-| 校验 | **Zod** — "TypeScript-first schema validation with static type inference"（https://zod.dev/） |
+| 校验 | **Zod** — "TypeScript-first schema validation with static type inference"（https://zod.dev/）<br>**Valibot** — "The open source schema library for TypeScript with bundle size, type safety and developer experience in mind."（https://valibot.dev/）<br>**ArkType** — "TypeScript's 1:1 validator, optimized from editor to runtime"（https://arktype.io/） |
 | 运行时 | **Node.js** — 官方要求生产用 LTS："Production applications should only use *Active LTS* or *Maintenance LTS* releases."（https://nodejs.org/en/about/previous-releases）<br>**Bun**、**Cloudflare Workers** — 见硬约束节的运行时耦合 |
-| 部署 | **Docker** — 官方 Node 镜像："The official Node.js docker image, made with love by the node community."，变体 `node:<version>` / `node:lts` / `node:alpine` / `node:slim`（https://github.com/nodejs/docker-node） |
+| 部署 · 打包 | **Docker** — 官方 Node 镜像："The official Node.js docker image, made with love by the node community."，变体 `node:<version>` / `node:lts` / `node:alpine` / `node:slim`（https://github.com/nodejs/docker-node） |
+| 部署 · 进程与反向代理 | **进程管理**（systemd 等）— Node 官方生产指南涉及用进程管理器处理崩溃重启（https://nodejs.org/en/docs/guides/）<br>**Nginx** — "a free, open-source, high-performance HTTP server and reverse proxy"（https://nginx.org/en/）<br>**Caddy** — "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"（https://caddyserver.com/） |
 
 ## 技术硬约束
 
@@ -119,7 +121,7 @@ Playwright 官方："Each version of Playwright needs specific versions of brows
 给用户推荐组合时按这套骨架，缺层就明说「这层不需要」而不是留空：
 
 ```
-前端框架 → 路由 → 后端 → API 风格 → 数据层(数据库 + ORM) → 认证 → UI → 构建工具链 → 测试 → 运行时 → 部署
+前端框架 → 路由 → 后端 → API 风格 → 校验 → 数据库引擎 → ORM → 认证 → UI → 构建与工具链 → 测试 → 运行时 → 部署(打包 / 进程与反向代理)
 ```
 
 两种常见形状：
@@ -131,3 +133,29 @@ Playwright 官方："Each version of Playwright needs specific versions of brows
 Next.js 或 TanStack Start 内部就有服务端，不单选后端层，API 风格由框架约定。适合单体全栈应用，部署单元少一个。
 
 两者的关键差异不是「谁更好」，而是**部署单元数量**与**后端逻辑的归属位置**。这一条要在决策表里写明。
+
+### 选框架会连带锁住工具链
+
+选了 Next.js，构建层就不是 Vite 而是内置的 Turbopack（官方：`--turbopack` 为默认，`--webpack` 可回退，https://nextjs.org/docs/app/api-reference/cli/next）。连带影响：
+
+- **单元测试运行器**：Vitest 的 `peerDependencies.vite` 覆盖 `^6.4.0 || ^7.0.0 || ^8.0.0`，不与 Next.js 共存。Next.js 官方测试指南给出 Jest 与 Vitest 两套设置方式（https://nextjs.org/docs/app/guides/testing），E2E 推荐 Playwright。选 Next.js 时单测运行器要单独定。
+- **类型检查**：Next.js 有独立的 `next typegen` 生成路由类型，官方说明可在构建前独立生成路由类型做类型检查（https://nextjs.org/docs/app/api-reference/cli/next）。
+- **部署形态**：Next.js 官方列出 Vercel（推荐）、Node.js Server、Docker、Static Export 与适配器等形态，各自限制不同（https://nextjs.org/docs/app/getting-started/deploying）。
+
+选 Vite 系（TanStack Router SPA / TanStack Start）时工具链统一，代价是没有 Next.js 的生态与内建约定。
+
+### 认证层的选择差异
+
+| 候选 | 定位 | 适合 |
+|---|---|---|
+| Better Auth | 框架无关的 TS 认证与授权框架，带插件生态 | 自建应用，要自己管数据库 |
+| Auth.js | 完整的 Web 应用认证方案 | 已有 Next.js 生态，或需要标准 OAuth 流程 |
+| Supabase Auth | Supabase 的托管认证服务 | 已经在用 Supabase 生态 |
+
+⚠️ **Lucia 已废弃**：官方站写明 "Lucia was deprecated in March 2025"（https://lucia-auth.com/），官方给出的替代是单文件实现 `code/auth_session.ts`。不要在新选型里选它。
+
+### 数据库引擎的选法
+
+见 `database-engines.md`（TS 轨与 Python 轨共用）：候选与官方定位、SQLite 并发写入限制、MongoDB 驱动选择、引擎与 ORM/认证/部署的耦合。
+
+要点：**引擎选择与 ORM 选择是两个决定** —— Prisma 与 Drizzle 都官方支持多种数据库。引擎对部署复杂度的影响最大：PostgreSQL / MySQL / MongoDB 是独立服务，部署层要包含它们；SQLite 是进程内文件，只需备份文件。

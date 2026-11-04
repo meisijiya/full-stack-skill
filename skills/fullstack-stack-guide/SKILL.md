@@ -1,6 +1,8 @@
 ---
 name: fullstack-stack-guide
-description: 技术栈选型与全栈术语解释。当用户要为全栈项目选技术栈、比较某一层的候选（ORM、前端框架、API 风格、部署目标）、判断一组技术能否共存、查版本兼容性、解释全栈术语，或需求变更后要评估「继续 / 降级 / 换栈」时使用。覆盖 TypeScript 与 Python 两条轨。
+description: 技术栈选型与全栈术语解释。当用户要为全栈项目选技术栈、比较某一层的候选（ORM、前端框架、API 风格、部署目标）、判断一组技术能否共存、查版本兼容性、解释全栈术语，或需求变更后要评估「继续 / 降级 / 换栈」时使用。覆盖 TypeScript 与 Python 两条轨。不用于需求澄清与需求对齐、架构设计、代码编写或代码审查。
+metadata:
+  version: "1.0.0"
 ---
 
 # 全栈技术栈选型指导
@@ -40,9 +42,9 @@ description: 技术栈选型与全栈术语解释。当用户要为全栈项目�
 - 团队既有技能（决定上手成本，往往是决定性因素）
 - 必须对接的外部服务（支付、IM、地图、第三方 API——它们常常直接决定 SDK 与运行时）
 
-按需追加：预算与时间线、是否要桌面端/移动端、是否需要多租户、是否要离线。
+按需追加：预算与时间线、是否要桌面端/移动端、是否需要多租户、是否需要离线。
 
-用 `ask` 工具一次问完，每题给「无偏好 / 不关心」出口。
+把这些问题一次性问完（用宿主的提问机制；没有就用普通提问列表），每题给「无偏好 / 不关心」出口。
 
 **完成标准**：拿到足以把候选集收窄到 2–3 套的硬事实。仍无法收窄时，明确说明缺哪条事实、缺它会导致什么分歧，然后按最保守假设继续并标注该假设。
 
@@ -104,10 +106,18 @@ description: 技术栈选型与全栈术语解释。当用户要为全栈项目�
 |---|---|
 | `references/constraints-typescript.md` | TS 轨选型：层候选、技术硬约束、生态惯例 |
 | `references/constraints-python.md` | Python 轨选型：同上 |
+| `references/database-engines.md` | 数据库引擎选型（两轨共用）：候选、官方定位、并发限制 |
 | `references/version-verification.md` | 查版本号与兼容性：npm / PyPI 两套字段与判定规则 |
 | `references/glossary.md` | 解释术语：四段式条目 |
 | `references/artifacts.md` | 写产物：决策表、版本证据、变更影响评估的格式 |
-| `references/templates/` | 可直接复制的产物模板 |
+
+产物模板（复制到使用方项目后填写）：
+
+| 模板 | 何时用 |
+|---|---|
+| `references/templates/decision.md` | 阶段三写选型决策表 |
+| `references/templates/version-evidence.md` | 阶段三写版本查证记录 |
+| `references/templates/change-impact.md` | 开发中复核写变更影响评估 |
 
 ## 常见失误
 

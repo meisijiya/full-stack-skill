@@ -2,6 +2,8 @@
 
 产物写进**使用方项目**的 `docs/stack/`。技能自身仓库不存放任何具体项目的选型结果。
 
+技能自身仓库（`meisijiya/full-stack-skill`）的根 `docs/` 只放 agent 文档与 ADR，不是产物目录。在本仓库里做验证或演练时，把产物写到仓库外的临时目录，不要混进 `docs/`。
+
 ```
 docs/stack/
   decision.md          选型决策表
@@ -61,7 +63,8 @@ docs/stack/
 技能在用户选定后，检查使用方项目的 `AGENTS.md`：
 
 - 已有 stack 小节 → 只更新指向的文件路径，不重复添加。
-- 没有 → 追加一段。格式遵循项目既有的小节风格；若项目已有 agent 文档约定（如本仓库的 `docs/agents/` 风格），按其风格写。
+- 没有 `AGENTS.md` → **不新建**。改在 `docs/stack/decision.md` 里加一行指向自身的说明，并在回复里告知用户：若希望后续会话自动读到选型结论，可在项目 `AGENTS.md` 加一段指向 `docs/stack/decision.md` 的小节。是否新建由用户决定。
+- 有 `AGENTS.md` 但结构不同 → 跟随该项目既有的小节风格，不自造格式。
 
 小节内容要短：一句说明 + 指向 `docs/stack/decision.md` 的指针。
 

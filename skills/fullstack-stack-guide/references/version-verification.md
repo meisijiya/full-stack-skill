@@ -55,6 +55,35 @@ curl -s https://registry.npmjs.org/<pkg>/latest | jq '{version, engines, peerDep
 4. `peerDependenciesMeta` 里标 `optional: true` 的 peer 缺失不算冲突。
 5. 框架与工具链的耦合要看官方 changelog，不能只看 peer 范围——例如工具链精确锁定 linter / formatter / test runner 版本时，升 linter 只能升工具链本身。
 
+### 包没有声明 `engines` 时的判定
+
+`engines` 在 package.json 里是**可选**字段——npm 官方说明未指定时不会阻止安装（https://docs.npmjs.com/cli/v10/configuring-npm/package-json#engines）。所以「查不到 engines」不等于「无版本下限」，按这个顺序找：
+
+1. 包自身 README 里的 Requirements / Supported Node.js version 段落
+2. 包的官方文档站或支持政策页
+3. 该包的官方 CI 配置里用的 Node 版本
+4. 都没有 → **在决策表里标「未查得 Node 下限官方声明」**，并按项目要跑的最老 Node 版本保守选型
+
+已知的实际例子：`@orpc/server` 与 `better-auth` 的 npm 清单无 `engines` 字段；`@orpc/server` 另有官方 Runtime Requirements 页（https://orpc.dev/docs/requirements），`better-auth` 则需回落到第 1–3 条。
+
+### 查证 TypeScript 7 兼容性
+
+npm 上 `typescript` 的 `latest` 已是 TS 7（Go 原生移植），**TS 7 不带 compiler API**（官方："it does not ship with an API"）。依赖 TS compiler API 的工具链（typescript-eslint 等）需并排使用 `@typescript/typescript6`。
+
+Zod 官方声明只说 "tested against *TypeScript v5.5* and later"，**没有声明支持 TS 7**；typescript-eslint 的支持矩阵也未见 TS 7 条目（https://typescript-eslint.io/users/dependency-versions/）。判定规则：
+
+- 查 `<包>` 官方支持矩阵里是否列出 TS 7 → 列出则可放心用
+- 未列出 → **标「未查得官方声明」**，并查该包最近版本的 changelog 是否有 TS 7 相关修复
+- 依赖 TS compiler API 的工具链在 TS 7 下 → 一律标「未查得官方声明」并给出替代（并排装 `@typescript/typescript6`）
+
+### 非 npm 分发的东西怎么查
+
+有些候选不是 npm 包，没有 `npm view` 可查：
+
+- **shadcn/ui** —— 组件代码复制进项目仓库，不是 npm 依赖。查证对象变成它的上游（Base UI / Radix）与 CLI 版本，查 `<上游包>` 的 npm 清单即可。决策表里这一层记「组件库，无独立版本号，随上游组件更新」。
+- **自建/框架内置的能力** —— 如 Django 的 ORM 与认证、Django 的 `makemigrations`。查证对象是框架本身的版本与其官方文档对应章节。
+- **Docker 镜像** —— 查镜像仓库的 tag 列表与 digest，钉具体 tag 或 digest，不要用 `latest`。
+
 ### 交叉验证
 
 peer 范围只说明「声明上兼容」。**真正的兼容要读官方 changelog / migration guide**：有破坏性变更的版本区间，peer 范围不会体现。查 `<pkg> repository.url` 找到源码仓库，翻 releases 或 migration guide。
