@@ -7,7 +7,7 @@ It answers two questions:
 1. **Selection.** A full-stack project spans a dozen layers (frontend framework, backend, API style, database, ORM, auth, runtime, deployment, testing). Which combinations are genuinely incompatible, which are just community convention, and where the version numbers should be pinned — these are **verifiable facts**, not something to recall or guess.
 2. **Terminology.** When a user says "frontend and backend", "interface", "migration", "deployment", they may mean something different from what an engineer means. The skill teaches the terminology *during* the selection conversation, so the user knows what they participated in deciding.
 
-The skill stores **no version numbers**. It stores the **verification procedure**: how to check official docs, how to judge compatibility, how to record the evidence as files. Versions must be looked up and evidenced at the moment of selection.
+The skill stores **no version facts** — only **structural rules and verification paths**. It never states what the current version is; it records how to check official docs, how to judge compatibility, and how to store the evidence as files. Versions must be looked up and evidenced at the moment of selection. See [ADR 0001](docs/adr/0001-no-version-snapshots.md).
 
 ## Layout
 
@@ -15,12 +15,12 @@ The skill stores **no version numbers**. It stores the **verification procedure*
 skills/fullstack-stack-guide/
   SKILL.md                      Main skill: three-stage flow + boundaries + re-check
   references/
-    constraints-typescript.md   TS track: layer candidates + hard constraints + conventions
-    constraints-python.md       Python track: layer candidates + hard constraints + conventions
-    database-engines.md         Database engine selection (shared by both tracks)
-    version-verification.md     Version verification procedure (npm / PyPI field sets)
-    glossary.md                 Full-stack term entries (term / plain language / why it matters / common misuse)
     artifacts.md                Artifact formats: decision table, version evidence, change impact
+    constraints-python.md       Python track: layer candidates + hard constraints + conventions
+    constraints-typescript.md   TS track: layer candidates + hard constraints + conventions
+    database-engines.md         Database engine selection (shared by both tracks)
+    glossary.md                 Full-stack term entries (term / plain language / why it matters / common misuse)
+    version-verification.md     Version verification procedure (npm / PyPI field sets)
     templates/                  Copy-paste artifact templates
 ```
 
@@ -110,7 +110,7 @@ Plus a short section appended to the project's `AGENTS.md` pointing at `docs/sta
 
 See `docs/adr/`. The three that most affect how it behaves:
 
-- [0001](docs/adr/0001-no-version-snapshots.md) stores no version numbers, only the verification procedure
+- [0001](docs/adr/0001-no-version-snapshots.md) stores no version facts, only structural rules and verification paths — the skill does not track version evolution, so it never becomes a version table that needs continuous upkeep
 - [0002](docs/adr/0002-constraint-layers.md) splits constraints into "technical hard constraints" and "ecosystem conventions"
 - [0003](docs/adr/0003-scope-boundary.md) selection and terminology only, no requirements alignment
 

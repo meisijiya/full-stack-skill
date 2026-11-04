@@ -13,9 +13,9 @@
 
 | 常被当成硬约束 | 实际 | 官方来源 |
 |---|---|---|
-| MongoDB 只能用 Mongoose | Prisma 官方有 MongoDB connector | https://docs.prisma.io/docs/orm/v7/core-concepts/supported-databases/mongodb |
+| MongoDB 只能用 Mongoose | Prisma 官方有 MongoDB connector（各大版本的支持状态现查该页） | https://www.prisma.io/docs/orm/core-concepts/supported-databases/mongodb |
 | SQLite 只能用 Drizzle | Prisma 官方有 SQLite connector | https://www.prisma.io/docs/orm/core-concepts/supported-databases/sqlite |
-| OpenAPI 风格必须配 Hono | oRPC 官方自带 OpenAPI Specification / Handler / Routing / Plugins 一整套 | https://orpc.unnoq.com/docs/openapi/openapi-specification |
+| OpenAPI 风格必须配 Hono | oRPC 官方自带 OpenAPI Specification / Handler / Routing / Plugins 一整套 | https://orpc.dev/docs/openapi/specification |
 | Bun 只能配 Hono | Bun 官方定位是通用运行时，能跑多种框架 | https://bun.com/docs |
 | Electron 只能配纯前端 SPA | Electron 官方定位是通用桌面壳，加载何种渲染器由项目决定 | https://www.electronjs.org/docs |
 | Workers 的后端只能是某几种 | Cloudflare Workers 官方支持多种框架与 handler | https://developers.cloudflare.com/workers/ |
@@ -39,14 +39,14 @@
 | API 风格 | **oRPC** — "Build end-to-end typesafe APIs and serve them over RPC, OpenAPI, and MCP"（https://orpc.dev/） |
 | 数据层 · ORM | **Drizzle ORM** — "a lightweight and performant TypeScript ORM with developer experience in mind."（https://orm.drizzle.team/）<br>**Prisma ORM** — "Type-safe data layer — A declarative, type-safe schema rebuilt in native TypeScript"（https://www.prisma.io/） |
 | 数据层 · 数据库引擎 | 见 `database-engines.md`（TS 轨与 Python 轨共用） |
-| 认证 | **Better Auth** — "a framework-agnostic authentication and authorization framework for TypeScript"（https://www.better-auth.com/）<br>**Auth.js** — "a complete open source authentication solution for web applications"（https://authjs.dev/）<br>**Supabase Auth** — "makes it easy for end users to sign in to your application"（https://supabase.com/docs/guides/auth） |
-| UI | **Tailwind CSS v4** — "A utility-first CSS framework packed with classes like flex, pt-4, text-center"（https://tailwindcss.com/）<br>**shadcn/ui** — "The Foundation for your Design System. Composable, accessible components with thoughtful defaults."（https://ui.shadcn.com/） |
-| 构建与工具链 | **Vite** — "The Build Tool for the Web."（https://vite.dev/）<br>**Vite+** — "the unified toolchain and entry point for web development."；"neither a framework, nor a package manager and *definitely not a replacement for Vite*"（https://viteplus.dev/guide/）<br>**Turbopack**（Next.js 内置）— "an incremental bundler optimized for JavaScript and TypeScript, written in Rust, and built into Next.js"（https://nextjs.org/docs/app/api-reference/turbopack） |
+| 认证 | **Better Auth** — "Better Auth is a framework-agnostic, universal authentication and authorization framework for TypeScript."（https://www.better-auth.com/docs/introduction）<br>**Auth.js** — "Authentication for the Web."（https://authjs.dev/）<br>**Supabase Auth** — "Supabase Auth makes it easy to implement authentication and authorization in your app."（https://supabase.com/docs/guides/auth） |
+| UI | **Tailwind CSS** — "A utility-first CSS framework packed with classes like flex, pt-4, text-center"（https://tailwindcss.com/）<br>**shadcn/ui** — "The Foundation for your Design System. Composable, accessible components with thoughtful defaults."（https://ui.shadcn.com/） |
+| 构建与工具链 | **Vite** — "The Build Tool for the Web."（https://vite.dev/）<br>**Vite+** — "the unified toolchain and entry point for web development."（https://viteplus.dev/guide/）；"neither a framework, nor a package manager and *definitely not a replacement for Vite*"（https://voidzero.dev/posts/announcing-vite-plus-1-0）<br>**Turbopack**（Next.js 内置）— "an incremental bundler optimized for JavaScript and TypeScript, written in Rust, and built into Next.js"（https://nextjs.org/docs/app/api-reference/turbopack） |
 | 测试 | **Vitest** — "A Vite-native testing framework."（https://vitest.dev/）<br>**Playwright** — "Fast and reliable end-to-end testing for modern web apps"（https://playwright.dev/） |
 | 校验 | **Zod** — "TypeScript-first schema validation with static type inference"（https://zod.dev/）<br>**Valibot** — "The open source schema library for TypeScript with bundle size, type safety and developer experience in mind."（https://valibot.dev/）<br>**ArkType** — "TypeScript's 1:1 validator, optimized from editor to runtime"（https://arktype.io/） |
 | 运行时 | **Node.js** — 官方要求生产用 LTS："Production applications should only use *Active LTS* or *Maintenance LTS* releases."（https://nodejs.org/en/about/previous-releases）<br>**Bun**、**Cloudflare Workers** — 见硬约束节的运行时耦合 |
 | 部署 · 打包 | **Docker** — 官方 Node 镜像："The official Node.js docker image, made with love by the node community."，变体 `node:<version>` / `node:lts` / `node:alpine` / `node:slim`（https://github.com/nodejs/docker-node） |
-| 部署 · 进程与反向代理 | **进程管理**（systemd 等）— Node 官方生产指南涉及用进程管理器处理崩溃重启（https://nodejs.org/en/docs/guides/）<br>**Nginx** — "a free, open-source, high-performance HTTP server and reverse proxy"（https://nginx.org/en/）<br>**Caddy** — "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"（https://caddyserver.com/） |
+| 部署 · 进程与反向代理 | **进程管理**（systemd 等）— Node 官方生产指南涉及用进程管理器处理崩溃重启（https://nodejs.org/en/docs/guides/）<br>**Nginx** — "nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server."（https://nginx.org/en/）<br>**Caddy** — "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"（https://caddyserver.com/） |
 
 ## 技术硬约束
 
@@ -75,21 +75,21 @@
 
 ### TypeScript 版本
 
-- npm 上 `typescript` 的 `latest` 已是 **TS 7**（Go 原生移植），官方说明："TypeScript 7.0 is made to be compatible with TypeScript 6.0's type-checking and command-line behavior."（https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/）
-- **TS 7 不带 API**："it does not ship with an API. We expect TypeScript 7.1 to ship with a new (and different) API"。依赖 TS compiler API 的工具（如 typescript-eslint）需并排使用 `@typescript/typescript6`。
-- **Zod 的 TS 下限**："Zod is tested against *TypeScript v5.5* and later. Older versions may work but are not officially supported."（https://zod.dev/）——**这是 Zod 官方声明的测试下限，不是 TS 的下限**；别的库各自声明，逐一查。
+- TypeScript 已进入大版本换代期。官方发布说明会写明换代带来的兼容影响（编译器重写、API 形态变化等），换版本前读官方发布说明：https://devblogs.microsoft.com/typescript/
+- **TS 大版本换代时，依赖 compiler API 的工具（如 typescript-eslint）可能需要并排装旧版编译器**。换代期的官方声明与替代装法见官方发布说明与该工具的支持矩阵（例：https://typescript-eslint.io/users/dependency-versions/），并查该包 npm 清单的 `peerDependencies`。
+- **每个库各自声明自己的 TypeScript 测试下限**，选之前查该库文档的要求章节（例：Zod 的 Requirements 节 https://zod.dev/ ）——**不要把某个库的下限当成 TypeScript 的下限**。
 
 ### React 版本
 
-- React 官方版本线在 react.dev/versions，上一版归档在 18.react.dev（https://react.dev/versions）
+- React 官方版本线在 react.dev/versions，每一个大版本的文档归档在 `x.react.dev` 子域（https://react.dev/versions）。**现行版本号现查该页**，本文件不记。
 - 各框架对 React 的 `peerDependencies` 范围各不相同，查 `npm view next peerDependencies`、`npm view @tanstack/react-router peerDependencies`、`npm view react-router peerDependencies`。
 - Next.js App Router 使用内置 React canary："App Router: Uses React canary releases built-in… Pages Router: Uses the React version installed in your project's package.json."（https://nextjs.org/docs）
 
 ### Node 版本与 LTS
 
 - 生产只用 Active LTS 或 Maintenance LTS（https://nodejs.org/en/about/previous-releases）
-- 现行 LTS 线与 EOL 线逐季变动，**选型时现查**
-- 官方发布周期正在变："Starting with Node.js 27, the release cycle will be annual and every major version will move to *LTS* status after its six-month *Current* phase"（同上）
+- 现行 LTS 线与 EOL 线逐季变动，**选型时现查**（同上页的 release 表）
+- 官方发布周期正在变："Starting with Node.js 27, the release cycle will be annual and every major version will move to *LTS* status after its six-month *Current* phase"（同上）——**这条解释了为什么 LTS 线会变，不要据此推断当前 LTS 是哪条线**
 
 ### 生成代码先于类型检查
 
@@ -101,7 +101,7 @@ TanStack Router 的路由树由构建生成。官方原文："This file is autom
 
 **Drizzle**：`drizzle-kit generate --name=init` 生成 SQL，`drizzle-kit migrate` 读取迁移目录、比对已应用记录、执行并写入 `__drizzle_migrations` 表（https://orm.drizzle.team/docs/drizzle-kit-migrate）。迁移目录初始为空时，依赖迁移的集成测试会先失败——先 generate。
 
-**Prisma**：**v7 起 `migrate dev` 不再自动触发 `prisma generate`**，需显式执行（https://www.prisma.io/docs/cli/v7/migrate/dev.md）。v6 则自动触发。跨大版本时这会静默打断流程。
+**Prisma**：**跨 Prisma 大版本时，`migrate dev` 是否自动触发 `prisma generate` 有过变化**（有的版本自动触发，有的不触发，需显式执行）。升级前查官方 CLI 文档的 migrate dev 章节确认当前行为（https://www.prisma.io/docs/cli/migrate/dev）。行为不一致时这会静默打断流程——按官方当前描述执行，不要凭旧版本记忆。
 
 ### Next.js 上 Cloudflare Workers
 
@@ -124,9 +124,71 @@ Playwright 官方："Each version of Playwright needs specific versions of brows
 - **Vite+ 通过别名接管 vite**：项目里 vite 指向 vite-plus 的核心包，且需与 vite-plus 版本一致，否则报版本解析失败。这是工具链的具体配置纪律，查 `viteplus.dev/guide`。
 - **Vite+ 精确锁定 oxlint / oxfmt / vitest 版本**，升这些只能升 Vite+ 本身。这是工具链内部耦合，不是生态通例。
 
+## 增值层（按需启用）
+
+主骨架之外的层。真实全栈栈常带其中几层：每个候选附官方定位原文与来源，不记版本号、不写价格（需要价格时现查官方定价页）。
+
+### 移动端
+
+- **Expo** — "Expo is the official React Native framework, recommended by the React Native team at Meta for building production apps on Android, iOS, and the web."（https://expo.dev/）
+- 与 Web 前端的关系：React/TypeScript 代码与 Web 端同源复用，但路由层各选各的（Expo Router 是面向原生的文件式路由），发布走应用商店，不走 Web 部署。
+
+### 桌面端
+
+- **Tauri** — "Create small, fast, secure, cross-platform applications"（https://tauri.app/）；官方写明用系统自带 web 渲染器，"the size of a Tauri app can be little as 600KB"，应用逻辑用 Rust（https://tauri.app/）。
+- **Electron** — "Electron is a framework for building desktop applications using JavaScript, HTML, and CSS."（https://www.electronjs.org/docs/latest）；官方写明二进制内嵌 Chromium 与 Node.js（同一 URL）。
+- 事实差异：Electron 自带 Chromium + Node.js，全栈保持 JS；Tauri 用系统 webview + Rust 主进程，包体更小但逻辑层换语言。
+
+### 对象存储
+
+- **Amazon S3** — "Object storage built to retrieve any amount of data from anywhere"（https://aws.amazon.com/s3/）
+- **Cloudflare R2** — "Object storage for all your data."（https://developers.cloudflare.com/r2/）；官方写明实现 S3 API 以便迁移（https://developers.cloudflare.com/r2/api/s3/api/）。
+- 存文件、图片、备份等大对象，不进数据库，数据库只存引用。
+
+### 后台任务与工作流
+
+- **Trigger.dev** — "Trigger.dev is the open source platform for building AI agents in TypeScript. Long-running tasks with retries, queues, AI observability, and elastic scaling."（https://trigger.dev/）
+- 与「进程内定时任务」的差别：进程内 cron 随进程重启与崩溃丢失、受请求超时约束；Trigger.dev 官方页面列出 "No timeouts"、"No servers to manage"（https://trigger.dev/），任务在平台侧执行，带重试与队列。
+
+### 邮件发送
+
+- **Resend** — "Resend is the email API for developers. Send transactional and marketing emails at scale with a simple, modern API."（https://resend.com/）
+- 验证码、收据、通知等事务邮件走独立邮件 API，与应用后端解耦。
+
+### 支付与订阅
+
+- **Stripe** — "Financial infrastructure to grow your revenue."（https://stripe.com/）
+- **Polar** — "Modern billing for AI companies"（https://polar.sh/）；官方自述 merchant of record 身份（https://polar.sh/）。
+
+### 移动内购
+
+- **RevenueCat** — "The world's best apps use RevenueCat to power purchases, manage customer data, and grow revenue on iOS, Android, and the web."（https://www.revenuecat.com/）
+- 与 Web 支付不同：商店内购须走 StoreKit / Google Play 渠道，RevenueCat 官方写明 "automates receipt validation across StoreKit, Google Play, smart TV, and web"（https://www.revenuecat.com/）；走 Stripe 的 Web 支付不经商店渠道。
+
+### BaaS 与行级权限
+
+- **Supabase** — "Build with a complete backend platform, from your database to your application logic."（https://supabase.com/docs）
+- **行级权限（RLS）** — "Postgres Row Level Security (RLS) gives you granular authorization rules that run inside the database."（https://supabase.com/docs/guides/database/postgres/row-level-security）：策略写在数据库内，相当于给每次查询隐式加 WHERE 条件，客户端直连也只看得到有权访问的行。
+
+### Monorepo 工具
+
+- **Turborepo** — "Turborepo is the build system for coding agents. It provides incremental task running, local and remote caching, and parallel execution."（https://turborepo.dev/）
+- 多包仓库需要跨包任务编排与缓存时启用；单包项目此层写「不需要」。
+
+### 包管理器
+
+骨架决策表里包管理器仍归「构建与工具链」层（见下文归属表），本小节只列选型差异。
+
+- **pnpm** — "pnpm is a drop-in replacement for npm — and then keeps going, with the features large repos actually need."（https://pnpm.io/）
+- **npm** — "Documentation for the npm registry, website, and command-line interface"（https://docs.npmjs.com/）
+- **Yarn** — "Yarn is a package manager that doubles down as project manager."（https://yarnpkg.com/）
+- 锁文件互不兼容（`package-lock.json` / `pnpm-lock.yaml` / `yarn.lock`），换包管理器要重新安装生成新锁。workspace 能力三者都有：pnpm 官方写明 workspace protocol 与单锁文件（https://pnpm.io/），Yarn 官方自称 "First package manager built specifically around workspaces"（https://yarnpkg.com/）。
+
 ## 层之间怎么搭
 
 给用户推荐组合时按这套骨架，缺层就明说「这层不需要」而不是留空：
+
+增值层不进主骨架，按项目需要单列一行；不需要就写「不需要」。
 
 ```
 前端框架 → 路由 → 后端 → API 风格 → 校验 → 数据库引擎 → ORM → 认证 → UI → 构建与工具链 → 测试 → 运行时 → 部署(打包 / 进程与反向代理)

@@ -7,7 +7,7 @@
 1. **选型**：一个全栈项目横跨十来个层（前端框架、后端、API 风格、数据库、ORM、认证、运行时、部署、测试）。哪些组合彼此不兼容、哪些只是社区惯例、版本号该钉在哪 —— 这些是**可查证的事实**，不必靠记忆或拍脑袋。
 2. **术语**：用户抛需求时说的「前后端」「接口」「迁移」「部署」，和工程师说的不是一回事。技能在选型对话里同步把术语讲清楚，让用户知道自己参与决定了什么。
 
-技能不存版本号。它存的是**查证流程**：怎么查官方文档、怎么判定兼容、怎么把证据落成文件。版本号必须在选型当时现查现证。
+技能**不存版本事实**，只存**结构规则与查证路径**：不出现「当前版本是什么」的陈述，只写「怎么查官方文档、怎么判定兼容、怎么把证据落成文件」。版本必须在选型当时现查现证。详见 [ADR 0001](docs/adr/0001-no-version-snapshots.md)。
 
 ## 目录
 
@@ -15,12 +15,12 @@
 skills/fullstack-stack-guide/
   SKILL.md                      技能主体：三阶段流程 + 边界 + 复核
   references/
-    constraints-typescript.md   TS 轨：层候选 + 技术硬约束 + 生态惯例
-    constraints-python.md       Python 轨：层候选 + 技术硬约束 + 生态惯例
-    database-engines.md         数据库引擎选型（两轨共用）
-    version-verification.md     版本查证流程（npm / PyPI 两套字段）
-    glossary.md                 全栈术语条目（专业词 / 白话 / 为什么影响你 / 常见误用）
     artifacts.md                产物格式：决策表、版本证据、变更影响评估
+    constraints-python.md       Python 轨：层候选 + 技术硬约束 + 生态惯例
+    constraints-typescript.md   TS 轨：层候选 + 技术硬约束 + 生态惯例
+    database-engines.md         数据库引擎选型（两轨共用）
+    glossary.md                 全栈术语条目（专业词 / 白话 / 为什么影响你 / 常见误用）
+    version-verification.md     版本查证流程（npm / PyPI 两套字段）
     templates/                  可直接复制的产物模板
 ```
 
@@ -110,7 +110,7 @@ docs/stack/
 
 见 `docs/adr/`。其中影响使用体验的三条：
 
-- [0001](docs/adr/0001-no-version-snapshots.md) 不存版本号，只存查证流程
+- [0001](docs/adr/0001-no-version-snapshots.md) 不存版本事实，只存结构规则与查证路径——技能不跟踪版本演进，避免变成需要持续跟进维护的版本表
 - [0002](docs/adr/0002-constraint-layers.md) 约束分「技术硬约束」与「生态惯例」两层
 - [0003](docs/adr/0003-scope-boundary.md) 只做选型与术语，不做需求对齐
 
