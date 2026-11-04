@@ -15,10 +15,11 @@
 skills/fullstack-stack-guide/
   SKILL.md                      技能主体：三阶段流程 + 边界 + 复核
   references/
-    glossary.md                 全栈术语条目（专业词 / 白话 / 为什么影响你 / 常见误用）
     constraints-typescript.md   TS 轨：层候选 + 技术硬约束 + 生态惯例
     constraints-python.md       Python 轨：层候选 + 技术硬约束 + 生态惯例
+    database-engines.md         数据库引擎选型（两轨共用）
     version-verification.md     版本查证流程（npm / PyPI 两套字段）
+    glossary.md                 全栈术语条目（专业词 / 白话 / 为什么影响你 / 常见误用）
     artifacts.md                产物格式：决策表、版本证据、变更影响评估
     templates/                  可直接复制的产物模板
 ```

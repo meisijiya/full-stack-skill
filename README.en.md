@@ -15,10 +15,11 @@ The skill stores **no version numbers**. It stores the **verification procedure*
 skills/fullstack-stack-guide/
   SKILL.md                      Main skill: three-stage flow + boundaries + re-check
   references/
-    glossary.md                 Full-stack term entries (term / plain language / why it matters / common misuse)
     constraints-typescript.md   TS track: layer candidates + hard constraints + conventions
     constraints-python.md       Python track: layer candidates + hard constraints + conventions
+    database-engines.md         Database engine selection (shared by both tracks)
     version-verification.md     Version verification procedure (npm / PyPI field sets)
+    glossary.md                 Full-stack term entries (term / plain language / why it matters / common misuse)
     artifacts.md                Artifact formats: decision table, version evidence, change impact
     templates/                  Copy-paste artifact templates
 ```
@@ -59,6 +60,16 @@ Typical triggers:
 - "The requirements changed — does the current stack still fit"
 - "What is an ORM / what is RPC"
 
+## Configuration
+
+**No configuration needed** — no keys, no accounts, no setup step. Works right after install.
+
+The skill only reads and writes files when triggered; it runs no resident process.
+
+Version verification needs `npm` (TypeScript track) or `curl` and `pip` (Python track) locally. These are dependencies of the verification commands, not of the skill itself — without them the skill still works, but version evidence will be incomplete.
+
+The skill creates a `docs/stack/` directory in the consuming project and may append a short stack section to that project's `AGENTS.md`. That is its only write to external state.
+
 ## What it leaves behind in your project
 
 ```
@@ -69,6 +80,31 @@ docs/stack/
 ```
 
 Plus a short section appended to the project's `AGENTS.md` pointing at `docs/stack/decision.md`, so later sessions can read the selection back.
+
+## Scope and boundaries
+
+**In scope**: stack selection, candidate comparison, combination compatibility, version compatibility verification, terminology explanation, and evaluating "continue / degrade / swap" when requirements change mid-development.
+
+**Out of scope**: requirements clarification and alignment, architecture design, writing code, code review, deployment operations. Those belong to other skills or to your own judgement.
+
+**Not covered**: the skill gives general stack guidance; it does not design a solution for a specific product. An existing, verified stack choice does not need it overturned — unless a requirement change touches a selection premise.
+
+## Data and permissions
+
+- The skill **collects and uploads nothing**. No telemetry, no reporting, no key storage.
+- The only outbound requests are the read-only `npm view` / `curl https://pypi.org/...` calls used to verify versions.
+- The only write to external state: creating files under `docs/stack/` in the consuming project, and appending a stack section to that project's `AGENTS.md`. Existing content is checked before writing.
+
+## Compatibility
+
+| Dimension | Status |
+|---|---|
+| Operating system | No platform lock. The skill is documentation and a workflow; macOS / Windows / Linux all work. Verification commands are written portably |
+| Host | Any host supporting the Agent Skills directory convention (`SKILL.md` + frontmatter). Verified to be discovered after `npx skills add` |
+| Runtime | No runtime dependency. The skill contains no scripts |
+| Verification tools | TS track needs `npm`; Python track needs `curl` and `pip` (optional `jq`). Without them the skill still works, but version evidence is incomplete |
+| Network | Version verification needs access to the npm registry and PyPI. Offline the skill still handles terminology and constraint checking, but versions must be supplied manually |
+| No sub-agent capability | Supported. The skill is a workflow and reference set for a single agent; it requires no delegation |
 
 ## Design decisions
 
